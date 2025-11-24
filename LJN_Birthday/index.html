@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>给最美棚妃的专属入场券</title>
+    <style>
+        /* --- 样式设计：刘宇宁应援色主题 --- */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #FCD217; /* 摩登兄弟应援黄 */
+            font-family: "Microsoft YaHei", sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            color: #333;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #000;
+            text-shadow: 2px 2px 0px #fff;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 80%;
+            max-width: 350px;
+            margin: 0 auto;
+            transition: transform 0.5s;
+        }
+
+        .avatar-area {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #eee;
+            border: 3px solid #FCD217;
+            object-fit: cover;
+        }
+
+        .message {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            min-height: 60px;
+        }
+
+        .btn {
+            background-color: #000;
+            color: #FCD217;
+            border: none;
+            padding: 12px 30px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        /* 点击后的特效类 */
+        .hidden { display: none; }
+        .show { display: block; animation: popIn 0.6s ease-out; }
+
+        /* 简单的动画 */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            80% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* 飘落的草莓/音符特效 */
+        .particle {
+            position: absolute;
+            top: -20px;
+            font-size: 24px;
+            animation: fall linear forwards;
+        }
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="intro" class="card">
+            <h1>🎂 生日快乐！</h1>
+            <p class="message">检测到一位VIP“棚妃”正在接近...<br>请点击按钮领取你的专属祝福！</p>
+            <button class="btn" onclick="startCelebration()">开启惊喜</button>
+        </div>
+
+        <div id="celebration" class="card hidden">
+            <div class="avatar-area">
+                <img src="friend.png" alt="你" class="avatar" onerror="this.src='https://via.placeholder.com/80?text=YOU'">
+                <img src="idol.png" alt="宁哥" class="avatar" onerror="this.src='https://via.placeholder.com/80?text=LJN'">
+            </div>
+            <h1>✨ 祝你岁岁平安 ✨</h1>
+            <p id="typewriter" class="message"></p>
+            <p style="font-size:12px; color:#888;">(记得截图留念哦)</p>
+        </div>
+    </div>
+
+    <audio id="bgm" loop>
+        <source src="" type="audio/mpeg">
+    </audio>
+
+    <script>
+        function startCelebration() {
+            // 1. 切换界面
+            document.getElementById('intro').classList.add('hidden');
+            document.getElementById('celebration').classList.remove('hidden');
+            document.getElementById('celebration').classList.add('show');
+
+            // 2. 播放特效（下草莓雨）
+            createRain();
+
+            // 3. 打字机效果输出祝福语
+            const text = "“听说今天是你的生日？\n哪怕世界再大，\n我也能在人海中一眼看到发光的你。\n生日快乐，我的最佳听众！”\n\n—— 来自 刘宇宁Q版";
+            typeWriter(text, 0);
+        }
+
+        function typeWriter(text, i) {
+            if (i < text.length) {
+                document.getElementById("typewriter").innerText += text.charAt(i);
+                setTimeout(() => typeWriter(text, i + 1), 50);
+            }
+        }
+
+        function createRain() {
+            const emojis = ['🍓', '🎵', '🎤', '💛', '🎂'];
+            setInterval(() => {
+                const p = document.createElement('div');
+                p.classList.add('particle');
+                p.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.animationDuration = Math.random() * 2 + 3 + 's'; // 3-5s
+                document.body.appendChild(p);
+                
+                // 清理多余元素
+                setTimeout(() => p.remove(), 5000);
+            }, 300);
+        }
+    </script>
+</body>
+</html>
